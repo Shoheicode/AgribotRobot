@@ -4,7 +4,7 @@ import time
 import sys
 
 # Configure serial port
-ser = serial.Serial("COM4", 115200)  # Replace COM4 with your ESP32 port
+ser = serial.Serial("COM3", 115200)  # Replace COM4 with your ESP32 port
 time.sleep(2)
 
 # Pygame setup
