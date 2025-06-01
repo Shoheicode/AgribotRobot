@@ -76,7 +76,7 @@ pygame.display.set_caption("Dual Motor Control")
 
 print("Hold W/S to move both. A/D for turns. X to stop. ESC to quit.")
 
-speed_value = 5000
+speed_value = 64
 last_sent = ""
 
 clock = pygame.time.Clock()
