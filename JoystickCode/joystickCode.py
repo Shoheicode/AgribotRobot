@@ -21,6 +21,7 @@ while True:
     y_axis = -joystick.get_axis(1)  # Invert (up = positive)
     speed = int(y_axis * 127)  # Scale for RoboClaw
     direction = 1 if speed > 0 else (-1 if speed < 0 else 0)
+    print(f"Speed: {speed}, Direction: {direction}")
 
     # Format: speed,direction\n
     data = f"{abs(speed)},{direction}\n"
