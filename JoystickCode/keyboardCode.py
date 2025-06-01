@@ -15,7 +15,7 @@ pygame.display.set_caption("ESP32 Motor Control")
 print("Keyboard control ready. Use W/S/X to send commands.")
 
 # Motor control state
-speed_value = 5000
+speed_value = 127
 current_direction = 0
 
 
