@@ -28,7 +28,7 @@ last_sent = ""
 clock = pygame.time.Clock()
 
 # Maximum motor power (scale to 0–100)
-MAX_POWER = 100
+MAX_POWER = 64
 
 
 def send_command(speed1, speed2):
@@ -56,15 +56,16 @@ while running:
     # Read joystick axes
     pygame.event.pump()
     axis_y = -joystick.get_axis(1)  # Forward/backward (invert so up = +)
-    axis_x = joystick.get_axis(0)  # Left/right
+    axis_y2 = joystick.get_axis(3)  # Right stick Y (optional, for additional control)
+    # axis_x = joystick.get_axis(0)  # Left/right
 
     # Tank drive mixing
-    left_power = (axis_y + axis_x) * MAX_POWER
-    right_power = (axis_y - axis_x) * MAX_POWER
+    left_power = (axis_y) * MAX_POWER
+    right_power = (axis_y2) * MAX_POWER
 
     # Clamp values to range [-100, 100]
-    left_power = max(-100, min(100, left_power))
-    right_power = max(-100, min(100, right_power))
+    left_power = max(-MAX_POWER, min(MAX_POWER, left_power))
+    right_power = max(-MAX_POWER, min(MAX_POWER, right_power))
 
     send_command(left_power, right_power)
     print(f"Left: {left_power}, Right: {right_power}")
