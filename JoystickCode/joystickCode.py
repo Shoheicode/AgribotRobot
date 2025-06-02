@@ -66,7 +66,7 @@ while running:
     if abs(left_power) < 2:
         left_power = 0
     if abs(right_power) < 2:
-        right_power_power = 0
+        right_power = 0
 
     # Clamp values to range [-100, 100]
     left_power = max(-MAX_POWER, min(MAX_POWER, left_power))
