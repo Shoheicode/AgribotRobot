@@ -52,6 +52,9 @@ text_surface = font.render("Hello, Pygame!", True, (255, 255, 255))  # White tex
 # Get the rectangle of the text surface and center it
 text_rect = text_surface.get_rect(center=(250, 150))
 
+enc1 = 0
+enc2 = 0
+
 
 running = True
 while running:
@@ -103,26 +106,29 @@ while running:
         try:
             line = ser.readline().decode().strip()
             if line.startswith("ENCODER"):
-                _, enc1, enc2 = line.split(",")
-                print(f"Encoder M1: {enc1}, M2: {enc2}")
-            # Create a text surface (text, antialias, color)
-            text_leftE = font.render(
-                "Left Encoder:" + str(enc1),
-                True,
-                (255, 255, 255),
-            )  # White text
-            text_rightE = font.render(
-                "Right Encoder:" + str(enc1),
-                True,
-                (255, 255, 255),
-            )  # White text
-            # Get the rectangle of the text surface and center it
-            text_LE = text_leftE.get_rect(center=(150, 100))
-            text_RE = text_rightE.get_rect(center=(350, 100))
-            screen.blit(text_leftE, text_LE)  # Draw text
-            screen.blit(text_rightE, text_RE)  # Draw text
+                _, enc1a, enc2a = line.split(",")
+                print(f"Encoder M1: {enc1a}, M2: {enc2a}")
+                enc1 = int(enc1a)
+                enc2 = int(enc2a)
         except Exception as e:
             print(f"Failed to read: {e}")
+
+    # Create a text surface (text, antialias, color)
+    text_leftE = font.render(
+        "Left Encoder:" + str(enc1),
+        True,
+        (255, 255, 255),
+    )  # White text
+    text_rightE = font.render(
+        "Right Encoder:" + str(enc2),
+        True,
+        (255, 255, 255),
+    )  # White text
+    # Get the rectangle of the text surface and center it
+    text_LE = text_leftE.get_rect(center=(150, 300))
+    text_RE = text_rightE.get_rect(center=(350, 300))
+    screen.blit(text_leftE, text_LE)  # Draw text
+    screen.blit(text_rightE, text_RE)  # Draw text
 
     # print(f"Left: {left_power}, Right: {right_power}")
     screen.blit(text_left, text_L)  # Draw text
