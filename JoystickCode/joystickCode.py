@@ -105,6 +105,22 @@ while running:
             if line.startswith("ENCODER"):
                 _, enc1, enc2 = line.split(",")
                 print(f"Encoder M1: {enc1}, M2: {enc2}")
+            # Create a text surface (text, antialias, color)
+            text_leftE = font.render(
+                "Left Encoder:" + str(enc1),
+                True,
+                (255, 255, 255),
+            )  # White text
+            text_rightE = font.render(
+                "Right Encoder:" + str(enc1),
+                True,
+                (255, 255, 255),
+            )  # White text
+            # Get the rectangle of the text surface and center it
+            text_LE = text_leftE.get_rect(center=(150, 100))
+            text_RE = text_rightE.get_rect(center=(350, 100))
+            screen.blit(text_leftE, text_LE)  # Draw text
+            screen.blit(text_rightE, text_RE)  # Draw text
         except Exception as e:
             print(f"Failed to read: {e}")
 
