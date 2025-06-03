@@ -19,7 +19,7 @@ joystick = pygame.joystick.Joystick(0)
 joystick.init()
 print(f"Joystick connected: {joystick.get_name()}")
 
-screen = pygame.display.set_mode((300, 100))
+screen = pygame.display.set_mode((500, 500))
 pygame.display.set_caption("Joystick Motor Control")
 
 print("Use left stick to control. ESC to quit.")
@@ -28,7 +28,7 @@ last_sent = ""
 clock = pygame.time.Clock()
 
 # Maximum motor power (scale to 0–100)
-MAX_POWER = 64
+MAX_POWER = 32
 
 
 def send_command(speed1, speed2):
@@ -43,6 +43,16 @@ def send_command(speed1, speed2):
         last_sent = command
 
 
+# Set up font (name, size)
+font = pygame.font.SysFont(None, 24)  # None uses default font
+
+# Create a text surface (text, antialias, color)
+text_surface = font.render("Hello, Pygame!", True, (255, 255, 255))  # White text
+
+# Get the rectangle of the text surface and center it
+text_rect = text_surface.get_rect(center=(250, 150))
+
+
 running = True
 while running:
     for event in pygame.event.get():
@@ -50,12 +60,13 @@ while running:
             running = False
 
     keys = pygame.key.get_pressed()
+
     if keys[pygame.K_ESCAPE]:
         running = False
 
     # Read joystick axes
     pygame.event.pump()
-    axis_y = -joystick.get_axis(1)  # Forward/backward (invert so up = +)
+    axis_y = joystick.get_axis(1)  # Forward/backward (invert so up = +)
     axis_y2 = joystick.get_axis(3)  # Right stick Y (optional, for additional control)
     # axis_x = joystick.get_axis(0)  # Left/right
 
@@ -73,8 +84,35 @@ while running:
     right_power = max(-MAX_POWER, min(MAX_POWER, right_power))
 
     send_command(left_power, right_power)
-    print(f"Left: {left_power}, Right: {right_power}")
 
+    screen.fill((0, 0, 0))  # 🔄 Clear previous frame
+
+    # Create a text surface (text, antialias, color)
+    text_left = font.render(
+        "Left Power:" + "{:.2f}".format(left_power / 127), True, (255, 255, 255)
+    )  # White text
+    text_right = font.render(
+        "Right Power:" + "{:.2f}".format(right_power / 127), True, (255, 255, 255)
+    )  # White text
+
+    # Get the rectangle of the text surface and center it
+    text_L = text_left.get_rect(center=(150, 100))
+    text_R = text_right.get_rect(center=(350, 100))
+
+    if ser.in_waiting:
+        try:
+            line = ser.readline().decode().strip()
+            if line.startswith("ENCODER"):
+                _, enc1, enc2 = line.split(",")
+                print(f"Encoder M1: {enc1}, M2: {enc2}")
+        except Exception as e:
+            print(f"Failed to read: {e}")
+
+    # print(f"Left: {left_power}, Right: {right_power}")
+    screen.blit(text_left, text_L)  # Draw text
+    screen.blit(text_right, text_R)  # Draw text
+
+    pygame.display.flip()  # Update display
     clock.tick(30)
 
 ser.close()
