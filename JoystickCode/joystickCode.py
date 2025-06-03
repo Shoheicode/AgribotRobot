@@ -110,6 +110,7 @@ while running:
                 print(f"Encoder M1: {enc1a}, M2: {enc2a}")
                 enc1 = int(enc1a)
                 enc2 = int(enc2a)
+            print(f"Received: {line}")
         except Exception as e:
             print(f"Failed to read: {e}")
 
