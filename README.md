@@ -30,12 +30,10 @@ venv\Scripts\activate
 ```
 
 ### 3. Run the Script
-
-    Make sure your ESP32 is connected and configured to listen on the correct COM port.
-
-        python your_script_name.py
-
-    Replace 'your_script_name.py' with the actual filename (e.g., 'main.py').
+Make sure your ESP32 is connected and configured to listen on the correct COM port.
+```python
+python your_script_name.py
+```
 
 🧼 Cleanup
 
