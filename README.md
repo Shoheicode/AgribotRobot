@@ -35,13 +35,12 @@ Make sure your ESP32 is connected and configured to listen on the correct COM po
 python your_script_name.py
 ```
 
-🧼 Cleanup
-
+### 🧼 Cleanup
 To deactivate the virtual environment when you're done:
-
-    deactivate
-
-📝 Notes
+```bash
+deactivate
+```
+### 📝 Notes
 
 - If no joystick is detected, the program will exit automatically.
 - Adjust the COM port in the Python script (serial.Serial("COM3", 115200)) as needed for your system.
