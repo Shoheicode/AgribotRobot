@@ -129,8 +129,8 @@ while running:
         (255, 255, 255),
     )  # White text
     # Get the rectangle of the text surface and center it
-    text_LE = text_leftE.get_rect(center=(150, 300))
-    text_RE = text_rightE.get_rect(center=(350, 300))
+    text_LE = text_leftE.get_rect(center=(150, 100))
+    text_RE = text_rightE.get_rect(center=(350, 100))
     screen.blit(text_leftE, text_LE)  # Draw text
     screen.blit(text_rightE, text_RE)  # Draw text
 
