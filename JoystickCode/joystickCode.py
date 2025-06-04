@@ -19,7 +19,7 @@ joystick = pygame.joystick.Joystick(0)
 joystick.init()
 print(f"Joystick connected: {joystick.get_name()}")
 
-screen = pygame.display.set_mode((500, 500))
+screen = pygame.display.set_mode((600, 600))
 pygame.display.set_caption("Joystick Motor Control")
 
 print("Use left stick to control. ESC to quit.")
@@ -29,6 +29,10 @@ clock = pygame.time.Clock()
 
 # Maximum motor power (scale to 0–127)
 MAX_POWER = 32
+
+# Circle settings
+circle_radius = 20
+center_x, center_y = 200 // 2, 200 // 2
 
 
 def send_command(speed1, speed2):
