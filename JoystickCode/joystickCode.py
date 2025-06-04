@@ -27,7 +27,7 @@ print("Use left stick to control. ESC to quit.")
 last_sent = ""
 clock = pygame.time.Clock()
 
-# Maximum motor power (scale to 0–100)
+# Maximum motor power (scale to 0–127)
 MAX_POWER = 32
 
 
