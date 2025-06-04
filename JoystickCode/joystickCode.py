@@ -128,11 +128,6 @@ while running:
         True,
         (255, 255, 255),
     )  # White text
-    # Get the rectangle of the text surface and center it
-    text_LE = text_leftE.get_rect(center=(150, 100))
-    text_RE = text_rightE.get_rect(center=(350, 100))
-    screen.blit(text_leftE, text_LE)  # Draw text
-    screen.blit(text_rightE, text_RE)  # Draw text
 
     # Map from [-1, 1] to vertical position on screen
     pos_y_left = int(center_y + axis_y * (circle_radius))
@@ -149,6 +144,12 @@ while running:
     # print(f"Left: {left_power}, Right: {right_power}")
     screen.blit(text_left, text_L)  # Draw text
     screen.blit(text_right, text_R)  # Draw text
+
+    # Get the rectangle of the text surface and center it
+    text_LE = text_leftE.get_rect(center=(pos_x_left, 100))
+    text_RE = text_rightE.get_rect(center=(pos_x_right, 100))
+    screen.blit(text_leftE, text_LE)  # Draw text
+    screen.blit(text_rightE, text_RE)  # Draw text
 
     pygame.draw.circle(
         screen, (255, 0, 0), (pos_x_left, center_y), outer_radius, 1
