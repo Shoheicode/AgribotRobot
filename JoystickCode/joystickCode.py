@@ -105,10 +105,6 @@ while running:
         "Right Power:" + "{:.2f}".format(right_power / 127), True, (255, 255, 255)
     )  # White text
 
-    # Get the rectangle of the text surface and center it
-    text_L = text_left.get_rect(center=(150, 100))
-    text_R = text_right.get_rect(center=(350, 100))
-
     if ser.in_waiting:
         try:
             line = ser.readline().decode().strip()
@@ -138,10 +134,6 @@ while running:
     screen.blit(text_leftE, text_LE)  # Draw text
     screen.blit(text_rightE, text_RE)  # Draw text
 
-    # print(f"Left: {left_power}, Right: {right_power}")
-    screen.blit(text_left, text_L)  # Draw text
-    screen.blit(text_right, text_R)  # Draw text
-
     # Map from [-1, 1] to vertical position on screen
     pos_y_left = int(center_y + axis_y * (circle_radius))
     pos_y_right = int(center_y + axis_y2 * (circle_radius))
@@ -149,6 +141,14 @@ while running:
     # X positions for left and right sticks
     pos_x_left = WIDTH // 4
     pos_x_right = 3 * WIDTH // 4
+
+    # Get the rectangle of the text surface and center it
+    text_L = text_left.get_rect(center=(pos_x_left, center_y + 50))
+    text_R = text_right.get_rect(center=(pos_x_right, center_y + 50))
+
+    # print(f"Left: {left_power}, Right: {right_power}")
+    screen.blit(text_left, text_L)  # Draw text
+    screen.blit(text_right, text_R)  # Draw text
 
     pygame.draw.circle(
         screen, (255, 0, 0), (pos_x_left, center_y), outer_radius, 1
