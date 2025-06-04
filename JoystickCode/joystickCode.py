@@ -154,7 +154,7 @@ while running:
         screen, (255, 0, 0), (pos_x_left, center_y), outer_radius, 1
     )  # Draw left outer circle
     pygame.draw.circle(
-        screen, (255, 0, 0), (pos_x_left, center_y), outer_radius, 1
+        screen, (255, 0, 0), (pos_x_right, center_y), outer_radius, 1
     )  # Draw right outer circle
 
     # Draw the circles
