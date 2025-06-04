@@ -25,7 +25,7 @@ source venv/bin/activate
 ```
 On Windows:
 ```bash
-setup_env.bat
+.\setup_env.bat
 venv\Scripts\activate
 ```
 
