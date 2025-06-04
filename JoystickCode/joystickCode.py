@@ -139,6 +139,18 @@ while running:
     screen.blit(text_left, text_L)  # Draw text
     screen.blit(text_right, text_R)  # Draw text
 
+    # Map from [-1, 1] to vertical position on screen
+    pos_y_left = int(center_y + axis_y * (200 // 2 - circle_radius))
+    pos_y_right = int(center_y + axis_y2 * (200 // 2 - circle_radius))
+
+    # X positions for left and right sticks
+    pos_x_left = 200 // 4
+    pos_x_right = 3 * 200 // 4
+
+    # Draw the circles
+    pygame.draw.circle(screen, (0, 255, 0), (pos_x_left, pos_y_left), circle_radius)
+    pygame.draw.circle(screen, (0, 0, 255), (pos_x_right, pos_y_right), circle_radius)
+
     pygame.display.flip()  # Update display
     clock.tick(30)
 
