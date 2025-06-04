@@ -31,7 +31,7 @@ venv\Scripts\activate
 
 ### 3. Run the Script
 Make sure your ESP32 is connected and configured to listen on the correct COM port.
-```python
+```bash
 python your_script_name.py
 ```
 
