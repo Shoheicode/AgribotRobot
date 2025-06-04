@@ -15,3 +15,38 @@ This project uses a USB joystick to control two motors via an ESP32 board over s
 ```bash
 git clone https://github.com/your-username/esp32-joystick-control.git
 cd esp32-joystick-control
+```
+
+### 2. Create and Activate a Virtual Environment
+On Linux/macOS:
+```bash
+bash setup_env.sh
+source venv/bin/activate
+```
+On Windows:
+```bash
+setup_env.bat
+venv\Scripts\activate
+```
+
+### 3. Run the Script
+
+    Make sure your ESP32 is connected and configured to listen on the correct COM port.
+
+        python your_script_name.py
+
+    Replace 'your_script_name.py' with the actual filename (e.g., 'main.py').
+
+🧼 Cleanup
+
+To deactivate the virtual environment when you're done:
+
+    deactivate
+
+📝 Notes
+
+- If no joystick is detected, the program will exit automatically.
+- Adjust the COM port in the Python script (serial.Serial("COM3", 115200)) as needed for your system.
+- Encoder data should be sent from the ESP32 in the format:
+
+        ENCODER,<value1>,<value2>
