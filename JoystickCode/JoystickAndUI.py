@@ -355,17 +355,17 @@ while running:
     draw_control_stick(
         stick_center_x_left,
         stick_center_y,
-        axis_y,
-        left_power,
-        "LEFT MOTOR",
+        axis_x_left,
+        turn,
+        "TURN",
         SUCCESS_COLOR,
     )
     draw_control_stick(
         stick_center_x_right,
         stick_center_y,
-        axis_y2,
-        right_power,
-        "RIGHT MOTOR",
+        axis_y_right,
+        forward,
+        "THROTTLE",
         ACCENT_COLOR,
     )
     draw_encoder_display()
