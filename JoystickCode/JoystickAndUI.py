@@ -52,7 +52,7 @@ last_sent = ""
 clock = pygame.time.Clock()
 
 # Maximum motor power
-MAX_POWER = 32
+MAX_POWER = 16
 
 # Control stick settings
 stick_center_x_left = WIDTH // 4
@@ -285,8 +285,8 @@ while running:
 
     if joystick:
         pygame.event.pump()
-        axis_y = joystick.get_axis(1)  # Left stick Y
-        axis_y2 = joystick.get_axis(3)  # Right stick Y
+        axis_y_right = joystick.get_axis(1)  # Left stick Y
+        axis_x_left = joystick.get_axis(2)  # Right stick Y
         # for i in range(joystick.get_numbuttons()):
         #     if joystick.get_button(i):
         #         print(f"Button {i} is pressed")
@@ -308,14 +308,18 @@ while running:
                 connection_status = False
 
     # Calculate motor powers
-    left_power = axis_y * MAX_POWER
-    right_power = axis_y2 * MAX_POWER
+    # Calculate forward and turning commands
+    forward = axis_y_right * MAX_POWER
+    turn = axis_x_left * MAX_POWER
 
     # Apply deadzone
-    if abs(left_power) < 2:
-        left_power = 0
-    if abs(right_power) < 2:
-        right_power = 0
+    if abs(forward) < 2:
+        forward = 0
+    if abs(turn) < 2:
+        turn = 0
+
+    left_power = forward + turn
+    right_power = forward - turn
 
     # Clamp values
     left_power = max(-MAX_POWER, min(MAX_POWER, left_power))
