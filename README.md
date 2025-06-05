@@ -94,7 +94,8 @@ Ensure the joystick is connected before launch.
 
 ## 📸 Screenshot
 
-![UI Screenshot](./65f0651d-97ed-44e9-ae15-806545b75128.png)
+![image](https://github.com/user-attachments/assets/3154e7f3-1f36-4353-accd-d1d9d7e6b1cd)
+
 
 ## 📜 License
 
