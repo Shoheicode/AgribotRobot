@@ -331,10 +331,14 @@ while running:
                 _, enc1a, enc2a = line.split(",")
                 enc1 = int(enc1a)
                 enc2 = int(enc2a)
-            elif line.startswith("VOLTAGE"):
+            if line.startswith("VOLTAGE"):
                 # Assuming voltage data format: "VOLTAGE,12.4"
                 _, voltage_str = line.split(",")
                 robot_voltage = float(voltage_str)
+            if line.startswith("SPEED"):
+                _, enc1a, enc2a = line.split(",")
+                enc1 = int(enc1a)
+                enc2 = int(enc2a)
             print(f"Received: {line}")
         except Exception as e:
             print(f"Failed to read: {e}")
