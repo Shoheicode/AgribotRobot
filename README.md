@@ -47,3 +47,7 @@ deactivate
 - Encoder data should be sent from the ESP32 in the format:
 
         ENCODER,<value1>,<value2>
+
+
+## Version:
+Update Roboclaw with version BasicmicroMotionStudio_1.0.0.75
