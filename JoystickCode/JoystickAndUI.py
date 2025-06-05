@@ -204,39 +204,6 @@ def draw_control_stick(center_x, center_y, stick_y_offset, power_value, label, c
     screen.blit(power_surface, power_rect)
 
 
-def draw_speed_display():
-    """Draw encoder readings"""
-    panel_rect = (20, HEIGHT - 120, WIDTH - 40, 80)
-    draw_rounded_rect(screen, PANEL_BG, panel_rect, 10)
-
-    # Encoder labels
-    enc_title = font_medium.render("Speed for Motors", True, TEXT_COLOR)
-    screen.blit(enc_title, (40, HEIGHT - 110))
-
-    # Left encoder
-    left_enc_text = f"LEFT: {enc1}"
-    left_enc_surface = font_small.render(left_enc_text, True, ACCENT_COLOR)
-    screen.blit(left_enc_surface, (40, HEIGHT - 80))
-
-    # Right encoder
-    right_enc_text = f"RIGHT: {enc2}"
-    right_enc_surface = font_small.render(right_enc_text, True, ACCENT_COLOR)
-    screen.blit(right_enc_surface, (200, HEIGHT - 80))
-
-    # Speed indicators (mock calculation based on encoder changes)
-    speed_left = abs(enc1 % 100) / 10  # Mock speed calculation
-    speed_right = abs(enc2 % 100) / 10
-
-    speed_left_text = f"SPEED: {speed_left:.1f}"
-    speed_right_text = f"SPEED: {speed_right:.1f}"
-
-    speed_left_surface = font_tiny.render(speed_left_text, True, SECONDARY_TEXT)
-    speed_right_surface = font_tiny.render(speed_right_text, True, SECONDARY_TEXT)
-
-    screen.blit(speed_left_surface, (40, HEIGHT - 60))
-    screen.blit(speed_right_surface, (200, HEIGHT - 60))
-
-
 def draw_encoder_display():
     """Draw encoder readings"""
     panel_rect = (20, HEIGHT - 120, WIDTH - 40, 80)
@@ -260,8 +227,8 @@ def draw_encoder_display():
     speed_left = abs(enc1 % 100) / 10  # Mock speed calculation
     speed_right = abs(enc2 % 100) / 10
 
-    speed_left_text = f"SPEED: {speed_left:.1f}"
-    speed_right_text = f"SPEED: {speed_right:.1f}"
+    speed_left_text = f"SPEED: {speedL:.1f}"
+    speed_right_text = f"SPEED: {speedR:.1f}"
 
     speed_left_surface = font_tiny.render(speed_left_text, True, SECONDARY_TEXT)
     speed_right_surface = font_tiny.render(speed_right_text, True, SECONDARY_TEXT)
