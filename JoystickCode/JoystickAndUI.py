@@ -361,7 +361,6 @@ while running:
         ACCENT_COLOR,
     )
     draw_encoder_display()
-    draw_speed_display()
     draw_instructions()
 
     # Connection warning
