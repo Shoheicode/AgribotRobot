@@ -227,8 +227,8 @@ def draw_encoder_display():
     speed_left = abs(enc1 % 100) / 10  # Mock speed calculation
     speed_right = abs(enc2 % 100) / 10
 
-    speed_left_text = f"SPEED: {speedL:.1f}"
-    speed_right_text = f"SPEED: {speedR:.1f}"
+    speed_left_text = f"SPEED: {speedL}"
+    speed_right_text = f"SPEED: {speedR}"
 
     speed_left_surface = font_tiny.render(speed_left_text, True, SECONDARY_TEXT)
     speed_right_surface = font_tiny.render(speed_right_text, True, SECONDARY_TEXT)
@@ -337,8 +337,8 @@ while running:
                 robot_voltage = float(voltage_str)
             if line.startswith("SPEED"):
                 _, spL, spR = line.split(",")
-                speedL = int(spR)
-                speedR = int(spL)
+                speedL = float(spR)
+                speedR = float(spL)
             print(f"Received: {line}")
         except Exception as e:
             print(f"Failed to read: {e}")
