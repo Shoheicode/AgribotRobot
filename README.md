@@ -54,3 +54,5 @@ Update Roboclaw with version BasicmicroMotionStudio_1.0.0.75
 
 Update ESP 32 with version 2.0.9
 
+## Circuit Diagram for AgriCrusier:
+![image](https://github.com/user-attachments/assets/66a488dc-2805-404c-b62c-07e03828eeb1)
