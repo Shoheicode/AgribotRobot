@@ -62,7 +62,7 @@ stick_outer_radius = 80
 stick_inner_radius = 15
 
 # Mock data (replace with real data from robot)
-robot_voltage = 12.4
+robot_voltage = 0
 enc1 = 0
 enc2 = 0
 
@@ -285,6 +285,25 @@ while running:
         pygame.event.pump()
         axis_y = joystick.get_axis(1)  # Left stick Y
         axis_y2 = joystick.get_axis(3)  # Right stick Y
+        # for i in range(joystick.get_numbuttons()):
+        #     if joystick.get_button(i):
+        #         print(f"Button {i} is pressed")
+        if ser and joystick.get_button(9):
+            print("Resetting robot...")
+            # Toggle RTS and DTR to reset
+            ser.dtr = False
+            ser.rts = True
+            time.sleep(0.1)
+            ser.dtr = True
+            ser.rts = False
+            time.sleep(0.1)
+            try:
+                ser = serial.Serial("COM3", 115200)  # Adjust COM port
+                time.sleep(2)
+                connection_status = True
+            except:
+                ser = None
+                connection_status = False
 
     # Calculate motor powers
     left_power = axis_y * MAX_POWER
@@ -314,7 +333,7 @@ while running:
                 # Assuming voltage data format: "VOLTAGE,12.4"
                 _, voltage_str = line.split(",")
                 robot_voltage = float(voltage_str)
-            # print(f"Received: {line}")
+            print(f"Received: {line}")
         except Exception as e:
             print(f"Failed to read: {e}")
 
