@@ -52,7 +52,7 @@ last_sent = ""
 clock = pygame.time.Clock()
 
 # Maximum motor power
-MAX_POWER = 16
+MAX_POWER = 22
 
 # Control stick settings
 stick_center_x_left = WIDTH // 4
@@ -285,8 +285,8 @@ while running:
 
     if joystick:
         pygame.event.pump()
-        axis_y_right = joystick.get_axis(1)  # Left stick Y
-        axis_x_left = joystick.get_axis(2)  # Right stick Y
+        axis_y_right = joystick.get_axis(3)  # Left stick Y
+        axis_x_left = -joystick.get_axis(0)  # Right stick Y
         # for i in range(joystick.get_numbuttons()):
         #     if joystick.get_button(i):
         #         print(f"Button {i} is pressed")
