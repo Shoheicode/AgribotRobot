@@ -327,7 +327,7 @@ while running:
         current_turn = 0
 
     # Ramping parameters
-    ramp_rate = 1.0  # max change per frame
+    ramp_rate = 5.0  # max change per frame
 
     # Apply ramping to forward
     if forward > current_forward:
@@ -425,7 +425,7 @@ while running:
             connection_status = False
 
     pygame.display.flip()
-    clock.tick(60)  # Increased to 60 FPS for smoother animation
+    clock.tick(30)  # Increased to 60 FPS for smoother animation
 
 # Cleanup
 if ser:
