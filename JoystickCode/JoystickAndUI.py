@@ -52,7 +52,8 @@ last_sent = ""
 clock = pygame.time.Clock()
 
 # Maximum motor power
-MAX_POWER = 5000
+MAX_POWER = 2000
+MAX_TURN = 1200  # Smaller turn rate feels more natural
 
 # Control stick settings
 stick_center_x_left = WIDTH // 4
@@ -346,8 +347,11 @@ while running:
     right_power = current_forward - current_turn
 
     # Clamp values
-    left_power = max(-MAX_POWER, min(MAX_POWER, left_power))
-    right_power = max(-MAX_POWER, min(MAX_POWER, right_power))
+    # left_power = max(-MAX_POWER, min(MAX_POWER, left_power))
+    # right_power = max(-MAX_POWER, min(MAX_POWER, right_power))
+    # Clamp values
+    left_power = max(-MAX_POWER - MAX_TURN, min(MAX_POWER + MAX_TURN, left_power))
+    right_power = max(-MAX_POWER - MAX_TURN, min(MAX_POWER + MAX_TURN, right_power))
 
     send_command(left_power, right_power)
 
