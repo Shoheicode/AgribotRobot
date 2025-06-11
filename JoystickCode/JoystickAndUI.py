@@ -52,7 +52,7 @@ last_sent = ""
 clock = pygame.time.Clock()
 
 # Maximum motor power
-MAX_POWER = 22
+MAX_POWER = 5000
 
 # Control stick settings
 stick_center_x_left = WIDTH // 4
@@ -317,9 +317,33 @@ while running:
         forward = 0
     if abs(turn) < 2:
         turn = 0
+    # Smoothing variables (initialize outside loop if needed)
+    try:
+        current_forward
+        current_turn
+    except NameError:
+        current_forward = 0
+        current_turn = 0
 
-    left_power = forward + turn
-    right_power = forward - turn
+    # Ramping parameters
+    ramp_rate = 1.0  # max change per frame
+
+    # Apply ramping to forward
+    if forward > current_forward:
+        current_forward = min(forward, current_forward + ramp_rate)
+    elif forward < current_forward:
+        current_forward = max(forward, current_forward - ramp_rate)
+
+    # Apply ramping to turn
+    if turn > current_turn:
+        current_turn = min(turn, current_turn + ramp_rate)
+    elif turn < current_turn:
+        current_turn = max(turn, current_turn - ramp_rate)
+
+    # left_power = forward + turn
+    # right_power = forward - turn
+    left_power = current_forward + current_turn
+    right_power = current_forward - current_turn
 
     # Clamp values
     left_power = max(-MAX_POWER, min(MAX_POWER, left_power))
