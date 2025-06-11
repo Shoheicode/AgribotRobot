@@ -327,7 +327,7 @@ while running:
         current_turn = 0
 
     # Ramping parameters
-    ramp_rate = 5.0  # max change per frame
+    ramp_rate = 10.0  # max change per frame
 
     # Apply ramping to forward
     if forward > current_forward:
