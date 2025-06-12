@@ -52,8 +52,8 @@ last_sent = ""
 clock = pygame.time.Clock()
 
 # Maximum motor power
-MAX_POWER = 2000
-MAX_TURN = 1200  # Smaller turn rate feels more natural
+MAX_POWER = 20000
+MAX_TURN = 9800  # Smaller turn rate feels more natural
 
 # Control stick settings
 stick_center_x_left = WIDTH // 4
@@ -314,9 +314,9 @@ while running:
     turn = axis_x_left * MAX_POWER
 
     # Apply deadzone
-    if abs(forward) < 2:
+    if abs(axis_y_right) < 2:
         forward = 0
-    if abs(turn) < 2:
+    if abs(axis_x_left) < 2:
         turn = 0
     # Smoothing variables (initialize outside loop if needed)
     try:
@@ -327,22 +327,26 @@ while running:
         current_turn = 0
 
     # Ramping parameters
-    ramp_rate = 10.0  # max change per frame
+    ramp_rate = 1000.0  # max change per frame
+    ramp_turn_rate = 100.0  # max change per frame
 
     # Apply ramping to forward
-    if forward > current_forward:
-        current_forward = min(forward, current_forward + ramp_rate)
-    elif forward < current_forward:
-        current_forward = max(forward, current_forward - ramp_rate)
+    if forward != 0:
+        if forward > current_forward:
+            current_forward = min(forward, current_forward + ramp_rate)
+        elif forward < current_forward:
+            current_forward = max(forward, current_forward - ramp_rate)
 
     # Apply ramping to turn
-    if turn > current_turn:
-        current_turn = min(turn, current_turn + ramp_rate)
-    elif turn < current_turn:
-        current_turn = max(turn, current_turn - ramp_rate)
+    if turn != 0:
+        if turn > current_turn:
+            current_turn = min(turn, current_turn + ramp_turn_rate)
+        elif turn < current_turn:
+            current_turn = max(turn, current_turn - ramp_turn_rate)
 
     # left_power = forward + turn
     # right_power = forward - turn
+
     left_power = current_forward + current_turn
     right_power = current_forward - current_turn
 
@@ -425,7 +429,7 @@ while running:
             connection_status = False
 
     pygame.display.flip()
-    clock.tick(30)  # Increased to 60 FPS for smoother animation
+    clock.tick(60)  # Increased to 60 FPS for smoother animation
 
 # Cleanup
 if ser:
