@@ -76,7 +76,8 @@ Ensure the joystick is connected before launch.
 ### Upload ESP32 Code
 
 1. Use Arduino IDE or PlatformIO.
-2. Upload `Sender.ino` to ESP32-A (connected to PC).
+2. Add the Roboclaw library
+3. Upload `Sender.ino` to ESP32-A (connected to PC).
 3. Upload `Reciever.ino` to ESP32-B (connected to RoboClaw + motors).
 4. Adjust MAC addresses if necessary (see `receiverAddress` in both `.ino` files).
 
