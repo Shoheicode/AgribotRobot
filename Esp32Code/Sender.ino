@@ -9,7 +9,9 @@ typedef struct struct_message {
 typedef struct struct_message1 {
   int enc1;
   int enc2;
-  double voltage;
+  float voltage;
+  float speedL;
+  float speedR;
 } struct_message1;
 
 struct_message outgoingData;
@@ -87,6 +89,7 @@ void onDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len) {
   struct_message1 encData;
   memcpy(&encData, incomingData, sizeof(encData));
   Serial.printf("ENCODER,%d,%d\n", encData.enc1, encData.enc2);
-   Serial.printf("VOLTAGE,%d\n", encData.voltage);
+  Serial.printf("VOLTAGE,%.2f\n", encData.voltage);
+  Serial.printf("SPEED,%.2f,%.2f\n", encData.speedL, encData.speedR);
 }
 
