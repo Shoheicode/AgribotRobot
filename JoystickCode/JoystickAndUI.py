@@ -52,8 +52,8 @@ last_sent = ""
 clock = pygame.time.Clock()
 
 # Maximum motor power
-MAX_POWER = 20000
-MAX_TURN = 9800  # Smaller turn rate feels more natural
+MAX_POWER = 60000
+MAX_TURN = 20000  # Smaller turn rate feels more natural
 
 # Control stick settings
 stick_center_x_left = WIDTH // 4
@@ -310,13 +310,13 @@ while running:
 
     # Calculate motor powers
     # Calculate forward and turning commands
-    forward = axis_y_right * MAX_POWER
-    turn = axis_x_left * MAX_POWER
+    forward = -axis_y_right * MAX_POWER
+    turn = axis_x_left * MAX_TURN
 
     # Apply deadzone
-    if abs(axis_y_right) < 2:
+    if abs(axis_y_right) < 0.05:
         forward = 0
-    if abs(axis_x_left) < 2:
+    if abs(axis_x_left) < 0.05:
         turn = 0
     # Smoothing variables (initialize outside loop if needed)
     try:
@@ -330,32 +330,32 @@ while running:
     ramp_rate = 1000.0  # max change per frame
     ramp_turn_rate = 100.0  # max change per frame
 
+    left_power = forward + turn
+    right_power = forward - turn
+
     # Apply ramping to forward
-    if forward != 0:
-        if forward > current_forward:
-            current_forward = min(forward, current_forward + ramp_rate)
-        elif forward < current_forward:
-            current_forward = max(forward, current_forward - ramp_rate)
+    # if forward != 0:
+    #     if forward > current_forward:
+    #         current_forward = min(forward, current_forward + ramp_rate)
+    #     elif forward < current_forward:
+    #         current_forward = max(forward, current_forward - ramp_rate)
 
-    # Apply ramping to turn
-    if turn != 0:
-        if turn > current_turn:
-            current_turn = min(turn, current_turn + ramp_turn_rate)
-        elif turn < current_turn:
-            current_turn = max(turn, current_turn - ramp_turn_rate)
+    # # Apply ramping to turn
+    # if turn != 0:
+    #     if turn > current_turn:
+    #         current_turn = min(turn, current_turn + ramp_turn_rate)
+    #     elif turn < current_turn:
+    #         current_turn = max(turn, current_turn - ramp_turn_rate)
 
-    # left_power = forward + turn
-    # right_power = forward - turn
-
-    left_power = current_forward + current_turn
-    right_power = current_forward - current_turn
+    # left_power = current_forward + current_turn
+    # right_power = current_forward - current_turn
 
     # Clamp values
     # left_power = max(-MAX_POWER, min(MAX_POWER, left_power))
     # right_power = max(-MAX_POWER, min(MAX_POWER, right_power))
     # Clamp values
-    left_power = max(-MAX_POWER - MAX_TURN, min(MAX_POWER + MAX_TURN, left_power))
-    right_power = max(-MAX_POWER - MAX_TURN, min(MAX_POWER + MAX_TURN, right_power))
+    # left_power = max(-MAX_POWER - MAX_TURN, min(MAX_POWER + MAX_TURN, left_power))
+    # right_power = max(-MAX_POWER - MAX_TURN, min(MAX_POWER + MAX_TURN, right_power))
 
     send_command(left_power, right_power)
 
