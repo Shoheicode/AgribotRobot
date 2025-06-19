@@ -219,7 +219,7 @@ void loop() {
   telemetry.speedR = speed2;
 
   // Send back to sender
-  esp_now_send(mac, (uint8_t *)&telemetry, sizeof(telemetry));
+  esp_now_send(receiverAddress, (uint8_t *)&telemetry, sizeof(telemetry));
   
   delay(10);
 }
