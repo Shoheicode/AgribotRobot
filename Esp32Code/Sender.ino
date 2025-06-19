@@ -4,6 +4,10 @@
 typedef struct struct_message {
   int speed1;
   int speed2;
+  bool solenoid1;
+  bool solenoid2;
+  bool solenoid3;
+  bool solenoid4;
 } struct_message;
 
 typedef struct struct_message1 {
@@ -17,12 +21,19 @@ typedef struct struct_message1 {
 struct_message outgoingData;
 struct_message1 incomingData;
 
+int MAX_POWER = 60000;
+int MAX_TURN = 20000;
+
+// CRSF buffer
+uint8_t crsfBuffer[64];
+int crsfPos = 0;
+
 // Replace with your receiver’s MAC
 uint8_t receiverAddress[] = { 0x88, 0x13, 0xBF, 0x62, 0xFC, 0x18 };
 
 void setup() {
   Serial.begin(115200);
-  Serial1.begin(9600);
+  Serial1.begin(420000, SERIAL_8N1, 22, 23); // CRSF UART
 
   WiFi.mode(WIFI_STA);
   Serial.print("ESP32 MAC Address: ");
@@ -56,28 +67,106 @@ void setup() {
     }
   }
 
-  esp_now_register_send_cb(onDataSent);
+  // esp_now_register_send_cb(onDataSent);
 
   esp_now_register_recv_cb(onDataRecv);
 }
 
 void loop() {
-  if (Serial.available()) {
-    String line = Serial.readStringUntil('\n');
-    int comma = line.indexOf(',');
+  // while (Serial1.available()) {
+  //   uint8_t byte = Serial1.read();
 
-    if (comma > 0) {
-      int s1 = line.substring(0, comma).toInt();
-      int s2 = line.substring(comma + 1).toInt();
+  //   if (crsfPos == 0 && byte != 0xC8) continue;
 
-      outgoingData.speed1 = s1;
-      outgoingData.speed2 = s2;
+  //   crsfBuffer[crsfPos++] = byte;
 
-      esp_now_send(receiverAddress, (uint8_t *)&outgoingData, sizeof(outgoingData));
-      Serial.printf("Sent -> M1: %d, M2: %d\n", s1, s2);
+  //   if (crsfPos > 2 && crsfPos >= crsfBuffer[1] + 2) {
+  //     parseCRSFPacket(crsfBuffer, crsfPos);
+  //     crsfPos = 0;
+  //   }
+  // }
+  // delay(100);
+}
+
+void parseCRSFPacket(uint8_t *data, int len) {
+  if (data[2] == 0x16) { // RC Channels frame
+    uint16_t channels[16];
+    uint8_t *p = &data[3];
+
+    channels[0] = ((p[0] | p[1] << 8) & 0x07FF);
+    channels[1] = ((p[1] >> 3 | p[2] << 5) & 0x07FF);
+    channels[2] = ((p[2] >> 6 | p[3] << 2 | p[4] << 10) & 0x07FF);
+    channels[3] = ((p[4] >> 1 | p[5] << 7) & 0x07FF);
+    channels[4] = ((p[5] >> 4 | p[6] << 4) & 0x07FF);
+    channels[5] = ((p[6] >> 7 | p[7] << 1 | p[8] << 9) & 0x07FF);
+    channels[6] = ((p[8] >> 2 | p[9] << 6) & 0x07FF);
+    channels[7] = ((p[9] >> 5 | p[10] << 3) & 0x07FF);
+    channels[8]  = ((p[11] | p[12] << 8) & 0x07FF);
+    channels[9]  = ((p[12] >> 3 | p[13] << 5) & 0x07FF);
+    channels[10] = ((p[13] >> 6 | p[14] << 2 | p[15] << 10) & 0x07FF);
+
+
+    float ch1 = ((channels[1] - 992.0f) / 820.0f); // Throttle
+    float ch2 = ((channels[3] - 992.0f) / 820.0f); // Steering
+
+    // Clamp values to -1.0 to 1.0
+    ch1 = constrain(ch1, -1.0f, 1.0f);
+    ch2 = constrain(ch2, -1.0f, 1.0f);
+
+    // Optionally: Apply deadzone
+    float deadzone = 0.05;
+    if (fabs(ch1) < deadzone) ch1 = 0;
+    if (fabs(ch2) < deadzone) ch2 = 0;
+
+    float forward = ch1 * MAX_POWER;
+    float turn = ch2 * MAX_POWER;
+
+    int leftPower = forward + turn;
+    int rightPower = forward - turn;
+
+    Serial.printf("Sent -> L: %d, R: %d\n", leftPower, rightPower);
+
+    // Read CH6 as digital switch
+    // Serial.println(channels[6]);
+    // Serial.println(channels[7]);
+    // bool estopActivated = false;
+    if (channels[6] > 1500) {  // Or adjust threshold as needed
+      Serial.println("Active 1");
+      // estopActivated = true;
+      outgoingData.solenoid1 = true;
+    } else {
+      Serial.println("NOT ACTIVE 1");
+      outgoingData.solenoid1 = false;
+      // estopActivated = false;
+    }
+    if (channels[7] > 1500) {  // Or adjust threshold as needed
+      Serial.println("Active 2");
+      outgoingData.solenoid2 = true;
+      // estopActivated = true;
+    } else {
+      Serial.println("NOT ACTIVE 2");
+      outgoingData.solenoid2 = false;
+      // estopActivated = false;
+    }
+    if (channels[8] > 1500) {  // Or adjust threshold as needed
+      Serial.println("Active 3");
+      outgoingData.solenoid3 = true;
+      // estopActivated = true;
+    } else {
+      Serial.println("NOT ACTIVE 3");
+      outgoingData.solenoid3 = false;
+      // estopActivated = false;
+    }
+    if (channels[9] > 1500) {  // Or adjust threshold as needed
+      Serial.println("Active 4");
+      outgoingData.solenoid4 = true;
+      // estopActivated = true;
+    } else {
+      Serial.println("NOT ACTIVE 4");
+      outgoingData.solenoid4 = false;
+      // estopActivated = false;
     }
   }
-  // Serial1.println("HELLLOOO");
 }
 
 void onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
